@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "../model/signup";
+import { registerUser } from "../model/models";
 
 function SignUpPage() {
   const [userName, setUserName] = useState("");

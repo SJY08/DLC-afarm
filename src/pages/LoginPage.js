@@ -1,16 +1,33 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { login } from "../model/models";
 
 function LoginPage() {
+  const [userName, setUserName] = useState("");
+  const [pwd, setPwd] = useState("");
+
   const navigate = useNavigate();
 
   const signup = () => {
     navigate("/signup");
   };
 
-  const completeLogin = () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     navigate("/home");
+
+    try {
+      const response = await login(userName, pwd);
+    } catch (error) {}
+  };
+
+  const idSubmitHandler = (e) => {
+    setUserName(e.target.value);
+  };
+
+  const pwdSubmitHandler = (e) => {
+    setPwd(e.target.value);
   };
 
   return (
@@ -18,13 +35,19 @@ function LoginPage() {
       <Title>afarm</Title>
       <SubTitle>ai in home farming</SubTitle>
       <InputForm>
-        <form onSubmit={completeLogin}>
-          <Input type="text" placeholder="User id" required />
+        <form onSubmit={handleSubmit}>
+          <Input
+            type="text"
+            placeholder="User id"
+            required
+            onChange={idSubmitHandler}
+          />
           <Input
             type="password"
             placeholder="Password"
             required
             maxLength={12}
+            onChange={pwdSubmitHandler}
           />
           <LoginButton>Login</LoginButton>
         </form>

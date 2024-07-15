@@ -18,3 +18,21 @@ export const registerUser = async (username, password) => {
     throw error;
   }
 };
+
+export const login = async (username, password) => {
+  const login = {
+    username: username,
+    password: password,
+  };
+  try {
+    const response = await axios.post(`${ip}/login`, login, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
