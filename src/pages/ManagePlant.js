@@ -187,10 +187,10 @@ const NowConditionContainer = styled.div`
 `;
 
 const NowConditionText = styled.p`
-  font-size 20px:
-  color:black;
-  margin:0;
-  padding:0; 
+  font-size: 20px;
+  color: black;
+  margin: 0;
+  padding: 0;
 `;
 
 const NowConditionTitle = styled.p`
@@ -224,7 +224,7 @@ const Leveling = styled.div`
   margin: 0;
   padding: 0;
   width: ${({ width }) => `${width}%`};
-  height: 46px;
+  height: 50px;
   background: linear-gradient(to right, #aeff6e, #ddffc2);
   border-radius: 23px;
 `;

@@ -12,37 +12,20 @@ import DiaryModal from "../components/DiaryModal";
 function DiaryPage() {
   const navigate = useNavigate();
   const token = Cookies.get("token");
-  const [journalData, setJournalData] = useState([]);
+  const [journalData, setjournalData] = useState();
+  const [journalPageData, setJournalPageData] = useState();
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedDiary, setSelectedDiary] = useState(null);
 
-  const today = new Date();
-
-  const month = today.getMonth() + 1;
-
-  const toOpenHandler = async (id) => {
-    try {
-      const response = await axios.get(`${ip}/journal/page?num=${id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${token}`,
-        },
-      });
-      setSelectedDiary(response.data); // Store the selected diary's detailed info
-      setIsOpen(true);
-    } catch (error) {
-      console.error(error);
-    }
+  const toOpenHandler = () => {
+    setIsOpen(true);
   };
 
   const toCloseHandler = () => {
     setIsOpen(false);
-    setSelectedDiary(null); // Clear selected diary data when modal is closed
   };
 
-  // Fetch the list of journals
   useEffect(() => {
-    const getJournalList = async () => {
+    const getjournal = async (token) => {
       try {
         const response = await axios.get(`${ip}/journal/select`, {
           headers: {
@@ -50,26 +33,53 @@ function DiaryPage() {
             Authorization: `${token}`,
           },
         });
-        setJournalData(response.data); // Store the fetched journal data
+
+        setjournalData(response.data);
+        console.log(response);
+        console.log(response.data[0]);
+
+        return response;
       } catch (error) {
         console.error(error);
+        throw error;
       }
     };
-    getJournalList(); // Fetch the list on component mount
-  }, [token]);
+
+    const pageResponse = async (page) => {
+      const response = await axios.get(`${ip}/journal/page?num=${page}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      });
+      setJournalPageData(response.data);
+
+      console.log(response.data);
+    };
+    pageResponse(116);
+    getjournal(token);
+  }, []);
 
   const toWrite = () => {
-    navigate("/write"); // Navigate to write page
+    navigate("/write");
   };
 
+  const today = new Date();
+
+  const month = today.getMonth() + 1;
+
+  const day = today.getDate();
+
+  console.log(journalData);
+  console.log(journalPageData);
+
+  // diarymodal props 지정.
   return (
     <>
       <header>
         <Header />
       </header>
-      {isOpen && selectedDiary && (
-        <DiaryModal data={selectedDiary} onClick={toCloseHandler} />
-      )}
+      {isOpen && <DiaryModal onClick={toCloseHandler} />}
       <TitleContainer>
         <Title>일기에 작물 사진을 올려 성장도를 확인하세요</Title>
         <Month>{month}월</Month>
@@ -77,16 +87,9 @@ function DiaryPage() {
         <AddButton onClick={toWrite}>일기 작성하기</AddButton>
       </TitleContainer>
       <Container>
-        {journalData.map((journal, index) => (
-          <Button key={index} onClick={() => toOpenHandler(journal.id)}>
-            <Diary
-              id={journal.id}
-              title={journal.title}
-              day={new Date(journal.date).getDate()}
-              detail={journal.content}
-            />
-          </Button>
-        ))}
+        <Button onClick={toOpenHandler}>
+          <Diary title="아" day={8} detail="아 집가고 싶다" />
+        </Button>
       </Container>
     </>
   );
