@@ -19,7 +19,9 @@ function LoginPage() {
 
     try {
       const response = await login(userName, pwd);
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const idSubmitHandler = (e) => {

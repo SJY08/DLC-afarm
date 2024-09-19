@@ -25,7 +25,6 @@ function HomePage() {
         <MyPlant>
           <MyPlantName>나의 식물 : 상추</MyPlantName>
           <img src={Lettuce} id="img" />
-          <GrowLevel>성장도 : %</GrowLevel>
         </MyPlant>
         <ButtonContainer>
           <PlantButton onClick={toManage}>
@@ -73,7 +72,6 @@ const MyPlant = styled.div`
 `;
 
 const MyPlantName = styled.p`
-  padding-top: 40px;
   text-align: center;
   color: white;
   font-size: 30px;

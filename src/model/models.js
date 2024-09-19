@@ -1,6 +1,8 @@
 import axios from "axios";
+import Cookies from "js-cookie"; // js-cookie 라이브러리 임포트
 import ip from "./ip";
 
+// 사용자 등록 함수
 export const registerUser = async (username, password) => {
   const signup = {
     username: username,
@@ -12,6 +14,10 @@ export const registerUser = async (username, password) => {
         "Content-Type": "application/json",
       },
     });
+    const token = response.data.token; // 응답에서 토큰 추출
+    if (token) {
+      Cookies.set("token", token, { expires: 7 }); // 토큰을 쿠키에 저장 (7일 만료)
+    }
     return response.data;
   } catch (error) {
     console.error(error);
@@ -19,6 +25,7 @@ export const registerUser = async (username, password) => {
   }
 };
 
+// 로그인 함수
 export const login = async (username, password) => {
   const login = {
     username: username,
@@ -30,6 +37,12 @@ export const login = async (username, password) => {
         "Content-Type": "application/json",
       },
     });
+    const token = response.headers["authorization"]; // 응답에서 토큰 추출
+    console.log(response.data);
+    console.log(token);
+    if (token !== undefined) {
+      Cookies.set("token", token, { expires: 7 }); // 토큰을 쿠키에 저장 (7일 만료)
+    }
     return response.data;
   } catch (error) {
     console.error(error);
